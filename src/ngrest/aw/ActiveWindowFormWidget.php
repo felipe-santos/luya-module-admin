@@ -154,7 +154,7 @@ class ActiveWindowFormWidget extends Widget
         // create the angular controller name
         $controller = $this->controllerName ? $this->controllerName : 'Controller'.Inflector::camelize($this->id) . Inflector::camelize($this->callback) . time();
         // render and return the view with the specific params
-        return $this->render('@admin/views/aws/base/_callbackForm', [
+        return $this->render('@app/views/admin/aws/base/_callbackForm', [
             'angularCrudControllerName' => $controller,
             'callbackName' => $this->callbackConvert($this->callback),
             'callbackArgumentsJson' => Json::encode($params),

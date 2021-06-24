@@ -70,7 +70,7 @@ class MenuController extends RestController
         $log = [];
 
         $query = (new Query())
-        ->select(['timestamp_create', 'api', 'user_id', 'admin_ngrest_log.id', 'is_update', 'is_delete', 'is_insert', 'admin_user.firstname', 'admin_user.lastname'])
+        ->select(['timestamp_create', 'api', 'user_id', '{{%admin_ngrest_log}}.id', 'is_update', 'is_delete', 'is_insert', '{{%admin_user}}.firstname', '{{%admin_user}}.lastname'])
         ->from('{{%admin_ngrest_log}}')
         ->leftJoin('{{%admin_user}}', '{{%admin_ngrest_log}}.user_id = {{%admin_user}}.id')
         ->orderBy(['timestamp_create' => SORT_DESC])

@@ -67,8 +67,8 @@ class TimestampController extends RestController
             'useronline' => UserOnline::getList(),
             'forceReload' => Angular::typeCast(Yii::$app->adminuser->identity->force_reload),
             'locked' => UserOnline::find()
-                ->select(['user_id', 'lock_pk', 'lock_table', 'last_timestamp', 'firstname', 'lastname', 'admin_user.id'])
-                ->where(['!=', 'admin_user.id', $userId])
+                ->select(['user_id', 'lock_pk', 'lock_table', 'last_timestamp', 'firstname', 'lastname', '{{%admin_user}}.id'])
+                ->where(['!=', '{{%admin_user}}.id', $userId])
                 ->joinWith('user')
                 ->asArray()
                 ->all(),

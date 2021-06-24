@@ -100,7 +100,7 @@ class RenderCrud extends Render implements ViewContextInterface, RenderCrudInter
      */
     public function getViewPath()
     {
-        return '@admin/views/ngrest';
+        return '@app/views/admin/ngrest';
     }
     
     /**

@@ -151,6 +151,8 @@ class User extends NgRestModel implements IdentityInterface, ChangePasswordInter
     public function ngRestAttributeTypes()
     {
         return [
+            'company_id' => ['selectModel', 'modelClass' => \app\modules\company\models\Company::class, 'valueField' => 'id', 'labelField' => ['title']],
+            'avatar_id' => 'image',
             'title' => ['selectArray', 'data' => static::getTitles()],
             'firstname' => 'text',
             'lastname' => 'text',
@@ -426,7 +428,7 @@ class User extends NgRestModel implements IdentityInterface, ChangePasswordInter
     public static function generateTokenEmail($token, $title, $text)
     {
         $result = new Parser(Yii::$app->request->userAgent);
-        return Yii::$app->view->render('@admin/views/mail/_token.php', [
+        return Yii::$app->view->render('@app/views/admin/mail/_token.php', [
             'url' => Url::domain(Url::base(true)),
             'token' => $token,
             'browser' => $result->toString(),
@@ -438,7 +440,7 @@ class User extends NgRestModel implements IdentityInterface, ChangePasswordInter
     public static function generateResetEmail($url, $title, $text)
     {
         $result = new Parser(Yii::$app->request->userAgent);
-        return Yii::$app->view->render('@admin/views/mail/_reset.php', [
+        return Yii::$app->view->render('@app/views/admin/mail/_reset.php', [
             'url' => Url::domain(Url::base(true)),
             'token' => Html::a(Module::t('reset_email_btn_label'), $url),
             'browser' => $result->toString(),

@@ -29,7 +29,8 @@ class DefaultController extends Controller
     /**
      * @var string Path to the admin layout
      */
-    public $layout = '@admin/views/layouts/main';
+    //public $layout = '@app/views/admin/layouts/main';
+    public $layout = '@app/views/admin/layouts/main';
     
     /**
      * Find assets to register, and add them into the view.

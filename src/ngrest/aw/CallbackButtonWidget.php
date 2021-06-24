@@ -73,7 +73,7 @@ class CallbackButtonWidget extends Widget
     {
         $controller = 'Controller'.Inflector::camelize($this->label) . Inflector::camelize($this->callback);
         // render and return the view with the specific params
-        return $this->render('@admin/views/aws/base/_callbackButton', [
+        return $this->render('@app/views/admin/aws/base/_callbackButton', [
             'angularCrudControllerName' => $controller,
             'callbackName' => $this->callbackConvert($this->callback),
             'callbackArgumentsJson' => Json::htmlEncode($this->params),

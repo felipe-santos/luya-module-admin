@@ -24,7 +24,7 @@ class DuplicateActiveButtonTestt extends AdminModelTestCase
                 'user_id' => 'int(11)',
                 'group_id' => 'int(11)',
             ],
-            'tableName' => 'admin_user_group',
+            'tableName' => '{{%admin_user_group}}',
         ]);
         $fixture = new NgRestModelFixture([
             'removeSafeAttributes' => true,

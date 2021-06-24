@@ -94,7 +94,7 @@ final class Group extends NgRestModel
             'users' => [
                 'checkboxRelation',
                 'model' => User::class,
-                'refJoinTable' => 'admin_user_group',
+                'refJoinTable' => '{{%admin_user_group}}',
                 'refModelPkId' => 'group_id',
                 'refJoinPkId' => 'user_id',
                 'labelField' => ['firstname', 'lastname', 'email'],

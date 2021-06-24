@@ -33,7 +33,8 @@ class LoginController extends Controller
     /**
      * @var string Switch to nosession layout instead of admin default template.
      */
-    public $layout = '@admin/views/layouts/nosession';
+    //public $layout = '@app/views/admin/layouts/nosession';
+    public $layout = '@app/views/admin/layouts/nosession';
 
     /**
      * @var string A path to an image which should be display on the login screen, if not set no images is displayed.

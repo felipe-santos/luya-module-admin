@@ -64,12 +64,12 @@ class SoftDeleteTraitTest extends AdminModelTestCase
             ],
         ]);
     
-        $this->app->db->createCommand()->truncateTable('admin_user_group')->execute();
-        $this->app->db->createCommand()->insert('admin_user_group', [
+        $this->app->db->createCommand()->truncateTable('{{%admin_user_group}}')->execute();
+        $this->app->db->createCommand()->insert('{{%admin_user_group}}', [
             'user_id' => 2,
             'group_id' => 1,
         ])->execute();
-        $this->app->db->createCommand()->insert('admin_user_group', [
+        $this->app->db->createCommand()->insert('{{%admin_user_group}}', [
             'user_id' => 3,
             'group_id' => 1,
         ])->execute();
@@ -102,8 +102,8 @@ class SoftDeleteTraitTest extends AdminModelTestCase
         
         // will faile
         $query = UserOnline::find()
-            ->select(['lock_pk', 'lock_table', 'last_timestamp', 'firstname', 'lastname', 'admin_user.id'])
-            ->where(['!=', 'admin_user.id', 1])
+            ->select(['lock_pk', 'lock_table', 'last_timestamp', 'firstname', 'lastname', '{{%admin_user}}.id'])
+            ->where(['!=', '{{%admin_user}}.id', 1])
             ->joinWith('user')
             ->asArray()
             ->all();

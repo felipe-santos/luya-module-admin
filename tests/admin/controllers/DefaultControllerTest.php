@@ -22,12 +22,12 @@ class DefaultControllerTest extends AdminModelTestCase
 
     public function testViewFilesForSyntaxError()
     {
-        $this->assertNotNull($this->app->view->render('@admin/views/layouts/_angulardirectives'));
-        $this->assertNotNull($this->app->view->render('@admin/views/template/default'));
-        $this->assertNotNull($this->app->view->render('@admin/views/storage/index'));
-        $this->assertNotNull($this->app->view->render('@admin/views/ngrest/_awform'));
-        $this->assertNotNull($this->app->view->render('@admin/views/default/dashboard', ['items' => []]));
-        $this->assertNotNull($this->app->view->render('@admin/views/default/index'));
+        $this->assertNotNull($this->app->view->render('@app/views/admin/layouts/_angulardirectives'));
+        $this->assertNotNull($this->app->view->render('@app/views/admin/template/default'));
+        $this->assertNotNull($this->app->view->render('@app/views/admin/storage/index'));
+        $this->assertNotNull($this->app->view->render('@app/views/admin/ngrest/_awform'));
+        $this->assertNotNull($this->app->view->render('@app/views/admin/default/dashboard', ['items' => []]));
+        $this->assertNotNull($this->app->view->render('@app/views/admin/default/index'));
     }
 
     public function testRenderDefault()

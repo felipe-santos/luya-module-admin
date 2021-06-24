@@ -61,6 +61,22 @@ class LogBehavior extends Behavior
     }
 
     /**
+     * Returns the company id for the current admin user if logged in and component is exists.
+     *
+     * @return integer
+     * @since 0.0.0
+     */
+    protected function getCompanyId()
+    {
+        if (Yii::$app->has('adminuser') && Yii::$app->adminuser->getIdentity()) {
+            $user = \luya\admin\models\User::findOne(Yii::$app->adminuser->id);
+            return $user->company_id;
+        }
+
+        return 0;
+    }
+
+    /**
      * Method to ensure whether the current log process should be run or not as log behavior can also be attached
      * the very universal models.
      *
@@ -86,6 +102,7 @@ class LogBehavior extends Behavior
         if ($this->isLoggable()) {
             Yii::$app->db->createCommand()->insert('{{%admin_ngrest_log}}', [
                 'user_id' => $this->getUserId(),
+                'company_id' => $this->getCompanyId(),
                 'timestamp_create' => time(),
                 'route' => $this->route,
                 'api' => $this->api,
@@ -109,6 +126,7 @@ class LogBehavior extends Behavior
         if ($this->isLoggable()) {
             Yii::$app->db->createCommand()->insert('{{%admin_ngrest_log}}', [
                 'user_id' => $this->getUserId(),
+                'company_id' => $this->getCompanyId(),
                 'timestamp_create' => time(),
                 'route' => $this->route,
                 'api' => $this->api,
@@ -132,6 +150,7 @@ class LogBehavior extends Behavior
         if ($this->isLoggable()) {
             Yii::$app->db->createCommand()->insert('{{%admin_ngrest_log}}', [
                 'user_id' => $this->getUserId(),
+                'company_id' => $this->getCompanyId(),
                 'timestamp_create' => time(),
                 'route' => $this->route,
                 'api' => $this->api,

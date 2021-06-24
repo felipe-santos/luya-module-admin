@@ -99,7 +99,7 @@ class ConfigTest extends AdminModelTestCase
                 ]
             ]
         ]);
-        $this->createTableIfNotExists('admin_user_group', [
+        $this->createTableIfNotExists('{{%admin_user_group}}', [
             'user_id' => 'int',
             'group_id' => 'int',
         ]);

@@ -26,7 +26,7 @@ class UserGroup extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'admin_user_group';
+        return '{{%admin_user_group}}';
     }
 
     /**
