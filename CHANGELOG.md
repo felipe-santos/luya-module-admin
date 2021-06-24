@@ -7,6 +7,7 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 
 > This release contains new migrations and requires to run the migrate command after updating. Check the [UPGRADE document](UPGRADE.md) to read more about breaking changes.
 
++ [#647](https://github.com/luyadev/luya-module-admin/pull/647) Lazy data load for ngrest plugin.
 + [#635](https://github.com/luyadev/luya-module-admin/pull/635) New migration database file, as new attributes are available for properties, images and files
 + [#298](https://github.com/luyadev/luya-module-admin/issues/298) Added new NgRest Plugin `SelectAsyncApi` which can be used to change the select based on certain context variables in real time, its also known as "dependent select".
 + [#642](https://github.com/luyadev/luya-module-admin/pull/642) Example usage for admin/proxy machine in detail window.
@@ -27,6 +28,10 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 + [#639](https://github.com/luyadev/luya-module-admin/pull/639) The LUYA `Config::set()` can now store larger amount of data, using `text()` instead of `string()`.
 + [#640](https://github.com/luyadev/luya-module-admin/pull/640) Added new `--only` option ( or `-o`) for `admin/proxy` command. Possible values are `db` or `storage`.
 + [#641](https://github.com/luyadev/luya-module-admin/pull/641) Added loading indicator for filemanager file detail.
++ [#643](https://github.com/luyadev/luya-module-admin/issues/643) Fixed issue where the root folder where displaying all files from the storage system.
++ [#645](https://github.com/luyadev/luya-module-admin/pull/645) New predifined radio input page property `luya\admin\base\RadioProperty`
++ [#648](https://github.com/luyadev/luya-module-admin/pull/648) The storage contains now an option which can generate filter version of images async in the queue after uploading. To do see take a look at `luya\admin\storage\BaseFileSystemStorage::$queueFilters`.
++ [#649](https://github.com/luyadev/luya-module-admin/pull/649) New `ngRestActiveSelections` API which allows developers to interact with a certain selection in the CRUD list view. For example to archive or delete multiple items. The API is similar to Active Buttons.
 
 ## 3.9.0 (24. November 2020)
 
