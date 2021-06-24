@@ -737,7 +737,7 @@ zaa.directive("crudLoader", ['$http', '$sce', function ($http, $sce) {
 }]);
 
 /**
- * Directive to load curd relations.
+ * Directive to load crud relations.
  */
 zaa.directive("crudRelationLoader", ['$http', '$sce', function ($http, $sce) {
     return {
@@ -1530,7 +1530,8 @@ zaa.directive("zaaSelect", function () {
             "label": "@label",
             "i18n": "@i18n",
             "id": "@fieldid",
-            "initvalue": "@initvalue"
+            "initvalue": "@initvalue",
+            "clearable" : "<",
         },
         controller: ['$scope', '$timeout', '$rootScope', function ($scope, $timeout, $rootScope) {
             if ($scope.optionsvalue == undefined) {
@@ -1539,6 +1540,10 @@ zaa.directive("zaaSelect", function () {
             if ($scope.optionslabel == undefined) {
                 $scope.optionslabel = 'label';
             }
+
+            if ($scope.clearable == undefined) {
+                $scope.clearable = true;
+            }
         }],
         template: function () {
             return '<div class="form-group form-side-by-side" ng-class="{\'input--hide-label\': i18n}">' +
@@ -1546,7 +1551,7 @@ zaa.directive("zaaSelect", function () {
                     '<label for="{{id}}">{{label}}</label>' +
                 '</div>' +
                 '<div class="form-side">'+
-                    '<luya-select ng-model="model" options="options" id="{{id}}" optionsvalue="{{optionsvalue}}" optionslabel="{{optionslabel}}" initvalue="{{initvalue}}"></luya-select>' +
+                    '<luya-select ng-model="model" options="options" id="{{id}}" clearable="clearable" optionsvalue="{{optionsvalue}}" optionslabel="{{optionslabel}}" initvalue="{{initvalue}}"></luya-select>' +
                 '</div>' +
             '</div>';
         }
@@ -1647,6 +1652,7 @@ zaa.directive("luyaSelect", function() {
             "optionslabel": "@optionslabel",
             "id": "@fieldid",
             "initvalue": "@initvalue",
+            "clearable": "<",
             ngChange : "&"
         },
         controller: ['$scope', '$timeout', '$rootScope', function ($scope, $timeout, $rootScope) {
@@ -1660,6 +1666,8 @@ zaa.directive("luyaSelect", function() {
             if ($scope.optionslabel == undefined || $scope.optionslabel == "") {
                 $scope.optionslabel = 'label';
             }
+
+            
 
             if (angular.isNumber($scope.model)) {
                 $scope.model = typeCastValue($scope.model);
@@ -1686,6 +1694,10 @@ zaa.directive("luyaSelect", function() {
                         }
                     }
                 });
+
+                if ($scope.clearable == undefined) {
+                    $scope.clearable = true;
+                }
             });
 
             /* methods */
@@ -1745,7 +1757,7 @@ zaa.directive("luyaSelect", function() {
                         '</select>' +
                         '<div class="zaaselect-selected">' +
                             '<span class="zaaselect-selected-text" ng-click="toggleIsOpen()">{{getSelectedLabel()}}</span>' +
-                            '<i class="material-icons zaaselect-clear-icon" ng-click="setModelValue(initvalue)">clear</i>' +
+                            '<i class="material-icons zaaselect-clear-icon" ng-show="clearable" ng-click="setModelValue(initvalue)">clear</i>' +
                             '<i class="material-icons zaaselect-dropdown-icon" ng-click="toggleIsOpen()">keyboard_arrow_down</i>' +
                         '</div>' +
                         '<div class="zaaselect-dropdown">' +
@@ -3102,8 +3114,8 @@ zaa.directive("storageFileManager", function () {
             onlyImages: '@onlyImages'
         },
         controller: [
-            '$scope', '$http', '$filter', '$timeout', '$rootScope', '$q', 'HtmlStorage', 'cfpLoadingBar', 'Upload', 'ServiceFoldersData', 'ServiceFilesData', 'LuyaLoading', 'AdminToastService', 'ServiceFoldersDirecotryId', 'ServiceAdminTags',
-            function ($scope, $http, $filter, $timeout, $rootScope, $q, HtmlStorage, cfpLoadingBar, Upload, ServiceFoldersData, ServiceFilesData, LuyaLoading, AdminToastService, ServiceFoldersDirecotryId, ServiceAdminTags) {
+            '$scope', '$http', '$filter', '$timeout', '$q', 'HtmlStorage', 'cfpLoadingBar', 'Upload', 'ServiceFoldersData', 'ServiceFilesData', 'LuyaLoading', 'AdminToastService', 'ServiceFoldersDirecotryId', 'ServiceAdminTags', 'ServiceQueueWaiting',
+            function ($scope, $http, $filter, $timeout, $q, HtmlStorage, cfpLoadingBar, Upload, ServiceFoldersData, ServiceFilesData, LuyaLoading, AdminToastService, ServiceFoldersDirecotryId, ServiceAdminTags, ServiceQueueWaiting) {
 
                 // ServiceFoldersData inheritance
 
@@ -3284,9 +3296,11 @@ zaa.directive("storageFileManager", function () {
                                 file: item.getAsFile()
                             }).then(function (response) {
                                 if (response.data.upload) {
-                                    $scope.getFilesForCurrentPage().then(function () {
-                                        AdminToastService.success(i18n['js_dir_manager_upload_image_ok']);
-                                        LuyaLoading.stop();
+                                    ServiceQueueWaiting.waitFor(response.data.queueIds).then(waitForResposne => {
+                                        $scope.getFilesForCurrentPage().then(function () {
+                                            AdminToastService.success(i18n['js_dir_manager_upload_image_ok']);
+                                            LuyaLoading.stop();
+                                        });
                                     });
                                 } else {
                                     AdminToastService.error(response.data.message);
@@ -3309,14 +3323,19 @@ zaa.directive("storageFileManager", function () {
 
                     file.upload.then(function (response) {
                         $timeout(function () {
-                            $scope.uploadResults++;
-                            file.processed = true;
-                            file.result = response.data;
-                            if (!file.result.upload) {
-                                AdminToastService.error(file.result.message);
-                                LuyaLoading.stop();
-                                $scope.errorMsg = true
-                            }
+
+                            ServiceQueueWaiting.waitFor(response.data.queueIds).then(waitForResposne => {
+                                $scope.uploadResults++;
+                                file.processed = true;
+                                file.result = response.data;
+                                if (!file.result.upload) {
+                                    AdminToastService.error(file.result.message);
+                                    LuyaLoading.stop();
+                                    $scope.errorMsg = true
+                                }
+                            })
+
+                           
                         });
                     }, function (response) {
                         file = response.data;
